@@ -19,6 +19,11 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 100%;
+        }
+
+        img {
+            height: auto;
         }
 
         body {
@@ -160,12 +165,6 @@
             margin-bottom: 25px;
         }
 
-        @media (max-width: 768px) {
-            .work-details {
-                grid-template-columns: 1fr;
-            }
-        }
-
         .detail-section h4 {
             color: var(--accent-color);
             font-size: 15px;
@@ -223,6 +222,61 @@
             padding: 30px 20px;
             color: var(--text-muted);
             font-size: 14px;
+        }
+
+        /* =================================================== */
+        /* АДАПТАЦІЯ ДЛЯ НОУТУ ТА ВЕЛИКИХ ЕКРАНІВ (ПК)          */
+        /* =================================================== */
+        @media (min-width: 1024px) {
+            .nav-container, .works-container {
+                max-width: 1200px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        /* =================================================== */
+        /* АДАПТАЦІЯ ДЛЯ ТЕЛЕФОНІВ ТА ПЛАНШЕТІВ (менше 768px)   */
+        /* =================================================== */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 28px !important;
+            }
+            .page-header {
+                padding: 110px 15px 30px !important;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+            .nav-menu {
+                gap: 12px;
+                font-size: 14px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .work-details {
+                grid-template-columns: 1fr !important;
+                gap: 15px;
+            }
+            .work-content {
+                padding: 20px !important;
+            }
+            .work-header h2 {
+                font-size: 20px;
+            }
+        }
+
+        /* Для дуже маленьких телефонів */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 20px;
+            }
+            .nav-menu {
+                gap: 8px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
