@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kosenko Tech (KT) — Техніка. Метал. Рішення.</title>
+    <style>
+        /* Стилі (CSS) у тому ж файлі для зручності */
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff6600; /* Промисловий помаранчевий */
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --border-color: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Навігація */
+        header {
+            background: rgba(18, 18, 18, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Головний блок (Hero) */
+        .hero {
+            padding: 160px 20px 100px;
+            text-align: center;
+            background: linear-gradient(rgba(18,18,18,0.8), rgba(18,18,18,0.95)), url('https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #ffffff;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-desc {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #e55c00;
+            transform: translateY(-2px);
+        }
+
+        /* Секція напрямків */
+        .services {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 50px;
+            color: #fff;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 10px auto 0;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .service-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .card-link {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Футер */
+        footer {
+            background-color: #0b0b0b;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Головне меню -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KT // KOSENKO TECH</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Головна</a></li>
+                <li><a href="works.html">⚙️ Роботи</a></li>
+                <li><a href="gallery.html">📸 Галерея</a></li>
+                <li><a href="socials.html">📱 Соцмережі</a></li>
+                <li><a href="contacts.html">📞 Контакти</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Головний блок -->
+    <section class="hero">
+        <h1>Kosenko Tech</h1>
+        <p>Техніка. Метал. Рішення.</p>
+        <p class="hero-desc">Професійна майстерня повного циклу. Створюємо надійну техніку власними руками, виконуємо складні токарні та шліфувальні роботи, а також ремонтуємо вузли будь-якої складності.</p>
+        <a href="works.html" class="btn">Дізнатися більше</a>
+    </section>
+
+    <!-- Блок із напрямами -->
+    <section class="services">
+        <h2 class="section-title">Наші напрями</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">🚜</div>
+                <h3>Саморобні трактори</h3>
+                <p>Проєктування та зборка надійної агротехніки під індивідуальні задачі.</p>
+                <a href="works.html#tractors" class="card-link">Детальніше →</a>
+            </div>
+            <div class="service-card">
+                <div class="icon">⚙️</div>
+                <h3>Токарні роботи</h3>
+                <p>Високоточна обробка металу на станках різного профілю.</p>
+                <a href="works.html#lathe" class="card-link">Детальніше →</a>
+            </div>
+            <div class="service-card">
+                <div class="icon">🔩</div>
+                <h3>Виготовлення деталей</h3>
+                <p>Розробка креслень та серійне чи штучне виробництво деталей.</p>
+                <a href="works.html#details" class="card-link">Детальніше →</a>
+            </div>
+            <div class="service-card">
+                <div class="icon">🛠️</div>
+                <h3>Шліфувальні роботи</h3>
+                <p>Ідеальна гладкість та точність поверхонь на шліфувальних станках.</p>
+                <a href="works.html#grinding" class="card-link">Детальніше →</a>
+            </div>
+            <div class="service-card">
+                <div class="icon">🔧</div>
+                <h3>Ремонт машин та вузлів</h3>
+                <p>Відновлення працездатності механізмів, агрегатів та вузлів.</p>
+                <a href="works.html#repair" class="card-link">Детальніше →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
+    </footer>
+
+</body>
+</html>
+

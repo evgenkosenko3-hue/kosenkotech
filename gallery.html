@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея — Kosenko Tech (KT)</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff6600;
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --border-color: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Навігація */
+        header {
+            background: rgba(18, 18, 18, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--accent-color);
+        }
+
+        /* Заголовок сторінки */
+        .page-header {
+            padding: 140px 20px 40px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* Галерея сітка */
+        .gallery-container {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+        }
+
+        .gallery-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .gallery-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+        }
+
+        .img-wrapper {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            background-color: #0b0b0b;
+        }
+
+        .img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-card:hover .img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .gallery-info {
+            padding: 20px;
+        }
+
+        .gallery-info h3 {
+            font-size: 18px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .gallery-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Футер */
+        footer {
+            background-color: #0b0b0b;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Головне меню -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KT // KOSENKO TECH</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Головна</a></li>
+                <li><a href="works.html">⚙️ Роботи</a></li>
+                <li><a href="gallery.html" class="active">📸 Галерея</a></li>
+                <li><a href="socials.html">📱 Соцмережі</a></li>
+                <li><a href="contacts.html">📞 Контакти</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <h1>Наша галерея</h1>
+        <p>Фотографії процесів виробництва, готових саморобних тракторів, складних деталей та обладнання.</p>
+    </div>
+
+    <!-- Галерея -->
+    <div class="gallery-container">
+
+        <div class="gallery-card">
+            <div class="img-wrapper">
+                <!-- Замініть посилання на ваші фото (наприклад: images/tractor1.jpg) -->
+                <img src="https://images.unsplash.com/photo-1592417817098-8f3d692040b1?auto=format&fit=crop&w=800&q=80" alt="Саморобний трактор">
+            </div>
+            <div class="gallery-info">
+                <h3>Зборка міні-трактора</h3>
+                <p>Процес монтажу ходової частини та компонування вузлів агротехніки в майстерні.</p>
+            </div>
+        </div>
+
+        <div class="gallery-card">
+            <div class="img-wrapper">
+                <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80" alt="Токарні роботи">
+            </div>
+            <div class="gallery-info">
+                <h3>Токарний процес</h3>
+                <p>Виготовлення точної металевої деталі на замовлення згідно з кресленнями.</p>
+            </div>
+        </div>
+
+        <div class="gallery-card">
+            <div class="img-wrapper">
+                <img src="https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80" alt="Виготовлення деталей">
+            </div>
+            <div class="gallery-info">
+                <h3>Готові деталі та вузли</h3>
+                <p>Партія виготовлених валів та втулок після ретельної перевірки якості.</p>
+            </div>
+        </div>
+
+        <div class="gallery-card">
+            <div class="img-wrapper">
+                <img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80" alt="Шліфувальні роботи">
+            </div>
+            <div class="gallery-info">
+                <h3>Шліфування поверхні</h3>
+                <p>Фінішна обробка металу для досягнення ідеальної точності та гладкості.</p>
+            </div>
+        </div>
+
+        <div class="gallery-card">
+            <div class="img-wrapper">
+                <img src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80" alt="Ремонт машин">
+            </div>
+            <div class="gallery-info">
+                <h3>Ремонт та відновлення вузлів</h3>
+                <p>Відновлення працездатності складних агрегатів та вузлів техніки.</p>
+            </div>
+        </div>
+
+        <div class="gallery-card">
+            <div class="img-wrapper">
+                <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=800&q=80" alt="Майстерня Kosenko Tech">
+            </div>
+            <div class="gallery-info">
+                <h3>Наш робочий простір</h3>
+                <p>Оснащення майстерні Kosenko Tech для виконання найскладніших інженерних завдань.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
+    </footer>
+
+</body>
+</html>
+
+

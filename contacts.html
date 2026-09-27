@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакти — Kosenko Tech (KT)</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff6600;
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --border-color: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Навігація */
+        header {
+            background: rgba(18, 18, 18, 0.95);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--accent-color);
+        }
+
+        /* Заголовок сторінки */
+        .page-header {
+            padding: 140px 20px 40px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* Контакти контент */
+        .contacts-container {
+            max-width: 1100px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .contacts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .contact-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .contact-card h3 {
+            font-size: 22px;
+            color: #fff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .contact-item {
+            margin-bottom: 20px;
+        }
+
+        .contact-item label {
+            display: block;
+            color: var(--accent-color);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .contact-item p, .contact-item a {
+            color: var(--text-color);
+            font-size: 16px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent-color);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #e55c00;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #2c2c2c;
+        }
+
+        .btn-secondary:hover {
+            background-color: #383838;
+        }
+
+        /* Мапа */
+        .map-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            filter: grayscale(100%) invert(90%) contrast(85%);
+        }
+
+        /* Футер */
+        footer {
+            background-color: #0b0b0b;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Головне меню -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KT // KOSENKO TECH</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Головна</a></li>
+                <li><a href="works.html">⚙️ Роботи</a></li>
+                <li><a href="gallery.html">📸 Галерея</a></li>
+                <li><a href="socials.html">📱 Соцмережі</a></li>
+                <li><a href="contacts.html" class="active">📞 Контакти</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Заголовок -->
+    <div class="page-header">
+        <h1>Зв'яжіться з нами</h1>
+        <p>Маєте запитання, креслення деталей чи замовлення на трактор? Завжди раді співпраці.</p>
+    </div>
+
+    <!-- Контакти основний блок -->
+    <div class="contacts-container">
+        
+        <!-- Інформація -->
+        <div class="contact-card">
+            <h3>Інформація про майстерню</h3>
+            
+            <div class="contact-item">
+                <label>Телефон / Viber / Telegram:</label>
+                <p><a href="tel:+380966538781">+38 (096) 653-87-81</a></p>
+            </div>
+
+            <div class="contact-item">
+                <label>Електронна пошта:</label>
+                <p><a href="mailto:kosenkotech73@gmail.com">kosenkotech73@gmail.com</a></p>
+            </div>
+
+            <div class="contact-item">
+                <label>Графік роботи:</label>
+                <p>Пн – Сб: з 08:00 до 19:00<br>Нд: Вихідний</p>
+            </div>
+
+            <div class="btn-group">
+                <a href="tel:+380966538781" class="btn">Зателефонувати</a>
+                <a href="mailto:kosenkotech73@gmail.com" class="btn btn-secondary">Написати на пошту</a>
+            </div>
+        </div>
+
+        <!-- Мапа -->
+        <div class="map-card">
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2540.544772183204!2d30.5234!3d50.4501!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTDCsDI3JzAwLjQiTiAzMMKwMzEnMjQuNCJF!5e0!3m2!1suk!2sua!4v1620000000000!5m2!1suk!2sua" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
+    </footer>
+
+</body>
+</html>
+
