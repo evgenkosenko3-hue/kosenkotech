@@ -22,19 +22,14 @@
             max-width: 100%;
         }
 
-        img {
-            height: auto;
-        }
-
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
         }
 
-        /* Навігація */
         header {
-            background: rgba(18, 18, 18, 0.95);
+            background: rgba(18, 18, 18, 0.98);
             border-bottom: 1px solid var(--border-color);
             position: fixed;
             width: 100%;
@@ -48,21 +43,21 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
+            padding: 15px 20px;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 20px;
             font-weight: bold;
             color: var(--accent-color);
             text-decoration: none;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
 
         .nav-menu {
             display: flex;
             list-style: none;
-            gap: 25px;
+            gap: 20px;
         }
 
         .nav-menu a {
@@ -70,15 +65,15 @@
             text-decoration: none;
             transition: color 0.3s;
             font-weight: 500;
+            font-size: 15px;
         }
 
         .nav-menu a:hover, .nav-menu a.active {
             color: var(--accent-color);
         }
 
-        /* Заголовок сторінки */
         .page-header {
-            padding: 140px 20px 40px;
+            padding: 130px 20px 40px;
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
@@ -95,14 +90,13 @@
             font-size: 16px;
         }
 
-        /* Список робіт (детальні картки) */
         .works-container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto 80px;
             padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 25px;
         }
 
         .work-card {
@@ -110,111 +104,76 @@
             border: 1px solid var(--border-color);
             border-radius: 8px;
             overflow: hidden;
-            transition: border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, border-color 0.3s;
         }
 
         .work-card:hover {
+            transform: translateY(-5px);
             border-color: var(--accent-color);
         }
 
-        /* Зображення всередині картки */
-        .work-img-wrapper {
+        .work-img {
             width: 100%;
-            height: 280px;
-            overflow: hidden;
+            height: 220px;
+            object-fit: cover;
             background-color: #0b0b0b;
         }
 
-        .work-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .work-card:hover .work-img-wrapper img {
-            transform: scale(1.05);
-        }
-
         .work-content {
-            padding: 30px;
-        }
-
-        .work-header {
+            padding: 20px;
             display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 15px;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
-        .work-header .icon {
-            font-size: 36px;
-        }
-
-        .work-header h2 {
-            font-size: 24px;
-            color: #fff;
-        }
-
-        .work-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            margin-bottom: 25px;
-        }
-
-        .detail-section h4 {
+        .work-tag {
+            font-size: 12px;
             color: var(--accent-color);
-            font-size: 15px;
-            margin-bottom: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
-        .detail-section ul {
-            list-style-type: none;
-            color: var(--text-muted);
+        .work-content h3 {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .work-content p {
             font-size: 14px;
-        }
-
-        .detail-section ul li {
-            margin-bottom: 5px;
-            position: relative;
-            padding-left: 15px;
-        }
-
-        .detail-section ul li::before {
-            content: '▪';
-            color: var(--accent-color);
-            position: absolute;
-            left: 0;
-        }
-
-        .detail-section p {
             color: var(--text-muted);
-            font-size: 14px;
+            margin-bottom: 20px;
+            flex-grow: 1;
         }
 
-        .btn {
-            display: inline-block;
+        .btn-order {
+            display: block;
             background-color: var(--accent-color);
             color: #fff;
-            padding: 10px 25px;
+            text-align: center;
+            padding: 10px;
             border-radius: 4px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 14px;
-            transition: background 0.3s, transform 0.2s;
+            transition: background 0.3s;
         }
 
-        .btn:hover {
+        .btn-order:hover {
             background-color: #e55c00;
-            transform: translateY(-2px);
         }
 
-        /* Футер */
+        .loading-text {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            padding: 40px;
+        }
+
         footer {
             background-color: #0b0b0b;
             border-top: 1px solid var(--border-color);
@@ -224,65 +183,34 @@
             font-size: 14px;
         }
 
-        /* =================================================== */
-        /* АДАПТАЦІЯ ДЛЯ НОУТУ ТА ВЕЛИКИХ ЕКРАНІВ (ПК)          */
-        /* =================================================== */
-        @media (min-width: 1024px) {
-            .nav-container, .works-container {
-                max-width: 1200px;
-                margin-left: auto;
-                margin-right: auto;
-            }
-        }
-
-        /* =================================================== */
-        /* АДАПТАЦІЯ ДЛЯ ТЕЛЕФОНІВ ТА ПЛАНШЕТІВ (менше 768px)   */
-        /* =================================================== */
         @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 28px !important;
-            }
-            .page-header {
-                padding: 110px 15px 30px !important;
-            }
             .nav-container {
                 flex-direction: column;
-                gap: 15px;
-                padding: 15px;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 10px;
+            }
+            .logo {
+                font-size: 18px;
             }
             .nav-menu {
                 gap: 12px;
-                font-size: 14px;
-                flex-wrap: wrap;
+                font-size: 13px;
                 justify-content: center;
+                flex-wrap: wrap;
+                width: 100%;
             }
-            .work-details {
-                grid-template-columns: 1fr !important;
-                gap: 15px;
+            .page-header {
+                padding-top: 150px;
             }
-            .work-content {
-                padding: 20px !important;
-            }
-            .work-header h2 {
-                font-size: 20px;
-            }
-        }
-
-        /* Для дуже маленьких телефонів */
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 20px;
-            }
-            .nav-menu {
-                gap: 8px;
-                font-size: 12px;
+            .works-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Головне меню -->
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo">KT // KOSENKO TECH</a>
@@ -292,173 +220,78 @@
                 <li><a href="gallery.html">📸 Галерея</a></li>
                 <li><a href="socials.html">📱 Соцмережі</a></li>
                 <li><a href="contacts.html">📞 Контакти</a></li>
+                <li><a href="admin.html">🛠️ Адмін</a></li>
             </ul>
         </div>
     </header>
 
-    <!-- Заголовок -->
     <div class="page-header">
-        <h1>Наші напрями та послуги</h1>
-        <p>Детальна інформація про можливості нашої майстерні, технології обробки та види робіт.</p>
+        <h1>Наші виконані роботи</h1>
+        <p>Перегляньте приклади наших проектів, виготовленої техніки та деталей. Ви можете замовити подібне рішення.</p>
     </div>
 
-    <!-- Список робіт -->
-    <div class="works-container">
-
-        <!-- 1. Саморобні трактори -->
-        <div class="work-card" id="tractors">
-            <div class="work-img-wrapper">
-                <img src="https://images.unsplash.com/photo-1599818814571-081079d816d7?auto=format&fit=crop&w=1000&q=80" alt="Саморобні трактори">
-            </div>
-            <div class="work-content">
-                <div class="work-header">
-                    <div class="icon">🚜</div>
-                    <h2>Саморобні трактори</h2>
-                </div>
-                <div class="work-details">
-                    <div class="detail-section">
-                        <h4>Що виготовляємо:</h4>
-                        <ul>
-                            <li>Міні-трактори під індивідуальні потреби</li>
-                            <li>Повнопривідні та задньопривідні моделі</li>
-                            <li>Техніка для обробки городів, садів та невеликих господарств</li>
-                        </ul>
-                    </div>
-                    <div class="detail-section">
-                        <h4>Матеріали та вузли:</h4>
-                        <ul>
-                            <li>Міцні конструкційні сталі та швелери</li>
-                            <li>Надійні двигуни (дизель/бензин)</li>
-                            <li>Вживані та посилені автомобільні вузли (мостові системи, коробки передач)</li>
-                        </ul>
-                    </div>
-                </div>
-                <a href="contacts.html" class="btn">Замовити розрахунок</a>
-            </div>
-        </div>
-
-        <!-- 2. Токарні роботи -->
-        <div class="work-card" id="lathe">
-            <div class="work-img-wrapper">
-                <img src="Токарні роботи.jpg" alt="Токарні роботи">
-            </div>
-            <div class="work-content">
-                <div class="work-header">
-                    <div class="icon">⚙️</div>
-                    <h2>Токарні роботи</h2>
-                </div>
-                <div class="work-details">
-                    <div class="detail-section">
-                        <h4>Що виготовляємо / робимо:</h4>
-                        <ul>
-                            <li>Вали, осі, втулки, фланці</li>
-                            <li>Шківи, муфти, перехідники</li>
-                            <li>Нарізання різьби (метрична, дюймова тощо)</li>
-                        </ul>
-                    </div>
-                    <div class="detail-section">
-                        <h4>Матеріали:</h4>
-                        <ul>
-                            <li>Конструкційні та леговані сталі (40Х, 45)</li>
-                            <li>Кольорові метали (бронза, латунь, алюміній)</li>
-                            <li>Капролон, фторопласт, пластики</li>
-                        </ul>
-                    </div>
-                </div>
-                <a href="contacts.html" class="btn">Замовити токарні роботи</a>
-            </div>
-        </div>
-
-        <!-- 3. Розробка та виготовлення деталей -->
-        <div class="work-card" id="details">
-            <div class="work-img-wrapper">
-                <img src="Розробка та виготовлення деталей.jpg" alt="Розробка та виготовлення деталей">
-            </div>
-            <div class="work-content">
-                <div class="work-header">
-                    <div class="icon">🔩</div>
-                    <h2>Розробка та виготовлення деталей</h2>
-                </div>
-                <div class="work-details">
-                    <div class="detail-section">
-                        <h4>Процес роботи:</h4>
-                        <ul>
-                            <li>Створення креслень за зразком, ескізом або зламаною деталлю</li>
-                            <li>Індивідуальне та дрібносерійне виробництво</li>
-                            <li>Підбір оптимальної технології виготовлення</li>
-                        </ul>
-                    </div>
-                    <div class="detail-section">
-                        <h4>Особливості:</h4>
-                        <p>Відновлення рідкісних або знятих із виробництва деталей до сільгосптехніки, обладнання та автомобілів у найкоротші терміни з високою точністю.</p>
-                    </div>
-                </div>
-                <a href="contacts.html" class="btn">Обговорити креслення</a>
-            </div>
-        </div>
-
-        <!-- 4. Шліфувальні роботи -->
-        <div class="work-card" id="grinding">
-            <div class="work-img-wrapper">
-                <img src="Шліфувальні роботи.jpg" alt="Шліфувальні роботи">
-            </div>
-            <div class="work-content">
-                <div class="work-header">
-                    <div class="icon">🛠️</div>
-                    <h2>Шліфувальні роботи</h2>
-                </div>
-                <div class="work-details">
-                    <div class="detail-section">
-                        <h4>Види робіт:</h4>
-                        <ul>
-                            <li>Плоске шліфування поверхонь</li>
-                            <li>Кругле шліфування валів та осей</li>
-                            <li>Досягнення мінімальних допусків та шорсткості</li>
-                        </ul>
-                    </div>
-                    <div class="detail-section">
-                        <h4>Призначення:</h4>
-                        <p>Фінішна обробка металу для забезпечення ідеального прилягання, посадки під підшипники та зниження тертя у рухомих з'єднаннях.</p>
-                    </div>
-                </div>
-                <a href="contacts.html" class="btn">Замовити шліфування</a>
-            </div>
-        </div>
-
-        <!-- 5. Ремонт машин та вузлів -->
-        <div class="work-card" id="repair">
-            <div class="work-img-wrapper">
-                <img src="РЕМОНТ МАШИН ТА ВУЗЛІВ.jpg" alt="Ремонт машин та вузлів">
-            </div>
-            <div class="work-content">
-                <div class="work-header">
-                    <div class="icon">🔧</div>
-                    <h2>Ремонт машин та вузлів</h2>
-                </div>
-                <div class="work-details">
-                    <div class="detail-section">
-                        <h4>Що ремонтуємо:</h4>
-                        <ul>
-                            <li>Вузли та агрегати саморобної та спецтехніки</li>
-                            <li>Коробки передач, редуктори, ходову частину</li>
-                            <li>Відновлення зношених посад під підшипники (наплавлення + проточка)</li>
-                        </ul>
-                    </div>
-                    <div class="detail-section">
-                        <h4>Результат:</h4>
-                        <p>Повне відновлення працездатності вузлів, діагностика несправностей та надання рекомендацій щодо подальшої експлуатації.</p>
-                    </div>
-                </div>
-                <a href="contacts.html" class="btn">Звернутися по ремонт</a>
-            </div>
-        </div>
-
+    <!-- Контейнер де динамічно з'являтимуться роботи з бази -->
+    <div class="works-container" id="works-list">
+        <div class="loading-text">Завантаження робіт з бази даних...</div>
     </div>
 
-    <!-- Футер -->
     <footer>
         <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
     </footer>
 
+    <!-- Firebase скрипт для завантаження робіт -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCUV88kb3vrItyu-GHkbQQRm37j4jqIjB0",
+            authDomain: "kosenkotech.firebaseapp.com",
+            projectId: "kosenkotech",
+            storageBucket: "kosenkotech.firebasestorage.app",
+            messagingSenderId: "215974797306",
+            appId: "1:215974797306:web:756eef756c74ca86520e43",
+            measurementId: "G-PPGS2P4JYL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadWorks() {
+            const container = document.getElementById('works-list');
+            try {
+                const querySnapshot = await getDocs(collection(db, "works"));
+                
+                if (querySnapshot.empty) {
+                    container.innerHTML = '<div class="loading-text">Поки що немає доданих робіт. Скористайтеся адмін-панеллю, щоб додати першу роботу!</div>';
+                    return;
+                }
+
+                container.innerHTML = ''; // Очищаємо текст завантаження
+                
+                querySnapshot.forEach((doc) => {
+                    const work = doc.data();
+                    
+                    const card = document.createElement('div');
+                    card.className = 'work-card';
+                    card.innerHTML = `
+                        <img src="${work.image}" alt="${work.title}" class="work-img" onerror="this.src='https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'">
+                        <div class="work-content">
+                            <span class="work-tag">${work.category}</span>
+                            <h3>${work.title}</h3>
+                            <p>${work.desc}</p>
+                            <a href="contacts.html" class="btn-order">Замовити схоже</a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Помилка завантаження робіт: ", error);
+                container.innerHTML = '<div class="loading-text" style="color: #ff4444;">Помилка завантаження даних із бази. Перевірте підключення.</div>';
+            }
+        }
+
+        loadWorks();
+    </script>
 </body>
 </html>
