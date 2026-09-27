@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Адмін-панель — Kosenko Tech (KT)</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --accent-color: #ff6600;
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --border-color: #2c2c2c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 100%;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Навігація */
+        header {
+            background: rgba(18, 18, 18, 0.98);
+            border-bottom: 1px solid var(--border-color);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--accent-color);
+        }
+
+        /* Основний контейнер адмінки */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 130px 20px 60px;
+        }
+
+        .admin-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .admin-header h1 {
+            font-size: 32px;
+            color: #fff;
+        }
+
+        .admin-badge {
+            background-color: rgba(255, 102, 0, 0.15);
+            color: var(--accent-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 102, 0, 0.3);
+        }
+
+        /* Статистика (Картки) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        /* Секції адмінки */
+        .admin-section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .admin-section h2 {
+            font-size: 20px;
+            color: #fff;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        /* Таблиця замовлень */
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            color: var(--accent-color);
+            font-weight: 600;
+            background-color: rgba(0,0,0,0.2);
+        }
+
+        td {
+            color: var(--text-color);
+        }
+
+        .status-new {
+            color: #ffaa00;
+            font-weight: bold;
+        }
+
+        .status-done {
+            color: #00cc66;
+            font-weight: bold;
+        }
+
+        /* Форма додавання */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            background-color: #121212;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #e55c00;
+            transform: translateY(-2px);
+        }
+
+        /* Футер */
+        footer {
+            background-color: #0b0b0b;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Адаптивність шапки */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 12px 10px;
+            }
+            .logo {
+                font-size: 18px;
+            }
+            .nav-menu {
+                gap: 12px;
+                font-size: 13px;
+                justify-content: center;
+                flex-wrap: wrap;
+                width: 100%;
+            }
+            .admin-container {
+                padding-top: 160px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Головне меню -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo">KT // KOSENKO TECH</a>
+            <ul class="nav-menu">
+                <li><a href="index.html">🏠 Головна</a></li>
+                <li><a href="works.html">⚙️ Роботи</a></li>
+                <li><a href="gallery.html">📸 Галерея</a></li>
+                <li><a href="socials.html">📱 Соцмережі</a></li>
+                <li><a href="contacts.html">📞 Контакти</a></li>
+                <li><a href="admin.html" class="active">🛠️ Адмін</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Основний контент адмінки -->
+    <div class="admin-container">
+        
+        <div class="admin-header">
+            <h1>Панель керування сайтом</h1>
+            <div class="admin-badge">Режим: Адміністратор</div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Нові заявки</h3>
+                <div class="number">3</div>
+            </div>
+            <div class="stat-card">
+                <h3>Всього робіт у каталозі</h3>
+                <div class="number">12</div>
+            </div>
+            <div class="stat-card">
+                <h3>Фото в галереї</h3>
+                <div class="number">24</div>
+            </div>
+        </div>
+
+        <!-- Таблиця заявок / замовлень -->
+        <div class="admin-section">
+            <h2>Останні заявки від клієнтів</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Клієнт</th>
+                            <th>Телефон / Послуга</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#104</td>
+                            <td>Олександр Петренко</td>
+                            <td>+380971234567 (Токарні роботи)</td>
+                            <td>27.09.2026</td>
+                            <td><span class="status-new">Нова</span></td>
+                        </tr>
+                        <tr>
+                            <td>#103</td>
+                            <td>Микола Іванов</td>
+                            <td>+380509876543 (Міні-трактор)</td>
+                            <td>25.09.2026</td>
+                            <td><span class="status-done">Виконано</span></td>
+                        </tr>
+                        <tr>
+                            <td>#102</td>
+                            <td>Андрій Коваль</td>
+                            <td>+380635554433 (Ремонт вузла)</td>
+                            <td>24.09.2026</td>
+                            <td><span class="status-done">Виконано</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Форма додавання нового елемента в галерею / роботи -->
+        <div class="admin-section">
+            <h2>Додати новий об'єкт у галерею / на роботу</h2>
+            <form>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Назва проєкту / деталі</label>
+                        <input type="text" placeholder="Наприклад: Зборка моста міні-трактора">
+                    </div>
+                    <div class="form-group">
+                        <label>Категорія</label>
+                        <select>
+                            <option>Виробництво техніки</option>
+                            <option>Токарні роботи</option>
+                            <option>Ремонт і відновлення</option>
+                            <option>Інше</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Посилання на фото (URL)</label>
+                    <input type="text" placeholder="https://images.unsplash.com/...">
+                </div>
+                <div class="form-group">
+                    <label>Опис процесу або характеристик</label>
+                    <textarea placeholder="Короткий опис виконаної роботи..."></textarea>
+                </div>
+                <button type="submit" class="btn">Опублікувати на сайті</button>
+            </form>
+        </div>
+
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
+    </footer>
+
+</body>
+</html>
