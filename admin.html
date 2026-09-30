@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Адмін-панель — Kosenko Tech (KT)</title>
+    <title>Авторизація та Адмін-панель — Kosenko Tech (KT)</title>
     <style>
         :root {
             --bg-color: #121212;
@@ -29,7 +29,7 @@
             line-height: 1.6;
         }
 
-        /* Екран введення пароля */
+        /* Екран авторизації (Вхід / Реєстрація) */
         #auth-overlay {
             position: fixed;
             top: 0;
@@ -67,7 +67,6 @@
             color: #fff;
             font-size: 16px;
             margin-bottom: 15px;
-            text-align: center;
         }
 
         .auth-box button {
@@ -80,13 +79,30 @@
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .auth-box button:hover {
+            background-color: #e55c00;
         }
 
         .auth-error {
             color: var(--danger-color);
             font-size: 14px;
-            margin-top: 10px;
+            margin-top: 15px;
             display: none;
+        }
+
+        .toggle-auth {
+            margin-top: 15px;
+            font-size: 14px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .toggle-auth span {
+            color: var(--accent-color);
+            text-decoration: underline;
         }
 
         /* Основний контент адмінки (спочатку прихований) */
@@ -124,6 +140,7 @@
             display: flex;
             list-style: none;
             gap: 20px;
+            align-items: center;
         }
 
         .nav-menu a {
@@ -134,8 +151,22 @@
             font-size: 15px;
         }
 
-        .nav-menu a:hover, .nav-menu a.active {
+        .nav-menu a:hover {
             color: var(--accent-color);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .btn-logout:hover {
+            background: var(--danger-color);
+            color: #fff;
         }
 
         .admin-container {
@@ -156,16 +187,6 @@
         .admin-header h1 {
             font-size: 32px;
             color: #fff;
-        }
-
-        .admin-badge {
-            background-color: rgba(255, 102, 0, 0.15);
-            color: var(--accent-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            border: 1px solid rgba(255, 102, 0, 0.3);
         }
 
         .admin-section {
@@ -206,7 +227,6 @@
             color: var(--text-muted);
             margin-bottom: 5px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .form-group input, .form-group textarea, .form-group select {
@@ -234,21 +254,12 @@
             font-weight: bold;
             font-size: 15px;
             cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #e55c00;
         }
 
         .btn-danger {
             background-color: var(--danger-color);
             padding: 8px 14px;
             font-size: 13px;
-        }
-
-        .btn-danger:hover {
-            background-color: #cc0000;
         }
 
         #success-message {
@@ -293,44 +304,47 @@
 </head>
 <body>
 
-    <!-- Екран введення пароля -->
+    <!-- Екран Входу / Реєстрації -->
     <div id="auth-overlay">
         <div class="auth-box">
-            <h2>🔒 Вхід в адмін-панель</h2>
-            <input type="password" id="admin-pass" placeholder="Введіть пароль">
-            <button onclick="checkPassword()">Увійти</button>
-            <p id="auth-error" class="auth-error">Невірний пароль!</p>
+            <h2 id="auth-title">🔒 Вхід в систему</h2>
+            <form id="auth-form">
+                <input type="email" id="auth-email" placeholder="Ваш Email" required>
+                <input type="password" id="auth-password" placeholder="Пароль" required>
+                <button type="submit" id="auth-btn">Увійти</button>
+            </form>
+            <p id="auth-error" class="auth-error"></p>
+            <div class="toggle-auth" onclick="toggleAuthMode()">
+                <span id="toggle-text">Немає акаунта? Зареєструватися</span>
+            </div>
         </div>
     </div>
 
-    <!-- Основна панель (з'явиться тільки після введення пароля) -->
+    <!-- Основний контент адмін-панелі -->
     <div id="admin-content">
         <header>
             <div class="nav-container">
                 <a href="index.html" class="logo">KT // KOSENKO TECH</a>
                 <ul class="nav-menu">
-                    <li><a href="index.html">🏠 Головна</a></li>
-                    <li><a href="works.html">⚙️ Роботи</a></li>
-                    <li><a href="gallery.html">📸 Галерея</a></li>
-                    <li><a href="socials.html">📱 Соцмережі</a></li>
-                    <li><a href="contacts.html">📞 Контакти</a></li>
+                    <li><a href="index.html">Головна</a></li>
+                    <li><a href="works.html">Роботи</a></li>
+                    <li><button class="btn-logout" onclick="logoutUser()">Вийти</button></li>
                 </ul>
             </div>
         </header>
 
         <div class="admin-container">
             <div class="admin-header">
-                <h1>Панель керування сайтом</h1>
-                <div class="admin-badge">Захищений режим</div>
+                <h1>Панель керування роботами</h1>
             </div>
 
             <div class="admin-section">
-                <h2>Додати нову роботу / послугу</h2>
+                <h2>Додати нову роботу</h2>
                 <form id="add-work-form">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Назва проєкту / деталі</label>
-                            <input type="text" id="work-title" required placeholder="Наприклад: Зборка моста">
+                            <label>Назва проєкту</label>
+                            <input type="text" id="work-title" required placeholder="Наприклад: Ремонт двигуна">
                         </div>
                         <div class="form-group">
                             <label>Категорія</label>
@@ -349,22 +363,22 @@
                         </div>
                         <div class="form-group">
                             <label>Ціна</label>
-                            <input type="text" id="work-price" required placeholder="Наприклад: 3000 грн">
+                            <input type="text" id="work-price" required placeholder="Наприклад: 2500 грн">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Опис процесу або характеристик</label>
-                        <textarea id="work-desc" required placeholder="Короткий опис..."></textarea>
+                        <label>Опис</label>
+                        <textarea id="work-desc" required placeholder="Опис послуги..."></textarea>
                     </div>
-                    <button type="submit" class="btn" id="submit-btn">Опублікувати на сайті</button>
-                    <p id="success-message">✅ Роботу успішно додано до бази даних!</p>
+                    <button type="submit" class="btn" id="submit-btn">Опублікувати</button>
+                    <p id="success-message">✅ Успішно додано!</p>
                 </form>
             </div>
 
             <div class="admin-section">
-                <h2>Керування опублікованими роботами (видалення)</h2>
+                <h2>Керування роботами (видалення)</h2>
                 <div id="admin-works-list">
-                    <p style="color: var(--text-muted);">Завантаження списку...</p>
+                    <p style="color: var(--text-muted);">Завантаження...</p>
                 </div>
             </div>
         </div>
@@ -374,32 +388,10 @@
         </footer>
     </div>
 
-    <!-- Скрипт перевірки пароля та логіки Firebase -->
-    <script>
-        // ЗМІНІТЬ ЦЕЙ ПАРОЛЬ НА СВІЙ БАЖАНИЙ
-        const SECRET_PASSWORD = "123"; 
-
-        function checkPassword() {
-            const inputVal = document.getElementById('admin-pass').value;
-            if (inputVal === SECRET_PASSWORD) {
-                document.getElementById('auth-overlay').style.display = 'none';
-                document.getElementById('admin-content').style.display = 'block';
-                loadAdminWorks(); // Завантажуємо список після входу
-            } else {
-                document.getElementById('auth-error').style.display = 'block';
-            }
-        }
-
-        // Дозволити натискати Enter замість кнопки
-        document.getElementById('admin-pass').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-    </script>
-
+    <!-- Firebase Логіка Авторизації та Бази Даних -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -413,8 +405,63 @@
         };
 
         const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
         const db = getFirestore(app);
 
+        let isSignUp = false; // Режим за замовчуванням: Вхід
+
+        window.toggleAuthMode = function() {
+            isSignUp = !isSignUp;
+            document.getElementById('auth-title').textContent = isSignUp ? "📝 Реєстрація акаунта" : "🔒 Вхід в систему";
+            document.getElementById('auth-btn').textContent = isSignUp ? "Зареєструватися" : "Увійти";
+            document.getElementById('toggle-text').textContent = isSignUp ? "Вже є акаунт? Увійти" : "Немає акаунта? Зареєструватися";
+            document.getElementById('auth-error').style.display = 'none';
+        }
+
+        // Обробка форми Входу/Реєстрації
+        const authForm = document.getElementById('auth-form');
+        authForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const errorElement = document.getElementById('auth-error');
+
+            try {
+                if (isSignUp) {
+                    // Реєстрація нового користувача
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert("Реєстрація успішна!");
+                } else {
+                    // Вхід існуючого користувача
+                    await signInWithEmailAndPassword(auth, email, password);
+                }
+            } catch (error) {
+                errorElement.style.display = 'block';
+                errorElement.textContent = "Помилка: " + error.message;
+            }
+        });
+
+        // Перевірка стану користувача (чи він увійшов)
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Користувач увійшов — показуємо адмінку
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                loadAdminWorks();
+            } else {
+                // Користувач не увійшов — показуємо вікно авторизації
+                document.getElementById('auth-overlay').style.display = 'flex';
+                document.getElementById('admin-content').style.display = 'none';
+            }
+        });
+
+        window.logoutUser = function() {
+            signOut(auth).then(() => {
+                location.reload();
+            });
+        }
+
+        // Робота з базами даних (додавання та видалення)
         const form = document.getElementById('add-work-form');
         const successMsg = document.getElementById('success-message');
         const submitBtn = document.getElementById('submit-btn');
@@ -424,7 +471,7 @@
             try {
                 const querySnapshot = await getDocs(collection(db, "works"));
                 if (querySnapshot.empty) {
-                    adminWorksContainer.innerHTML = '<p style="color: var(--text-muted);">На сайті ще немає жодної роботи.</p>';
+                    adminWorksContainer.innerHTML = '<p style="color: var(--text-muted);">Немає робіт.</p>';
                     return;
                 }
 
@@ -438,27 +485,24 @@
                     row.innerHTML = `
                         <div class="admin-item-info">
                             <h4>${work.title}</h4>
-                            <span>Категорія: <b>${work.category}</b> | Ціна: <b>${work.price || 'Не вказано'}</b></span>
+                            <span>Категорія: <b>${work.category}</b> | Ціна: <b>${work.price || '-'}</b></span>
                         </div>
                         <button class="btn btn-danger" onclick="deleteWork('${docId}')">Видалити</button>
                     `;
                     adminWorksContainer.appendChild(row);
                 });
             } catch (error) {
-                console.error("Помилка завантаження:", error);
-                adminWorksContainer.innerHTML = '<p style="color: #ff4444;">Помилка завантаження даних.</p>';
+                console.error("Помилка:", error);
             }
         }
 
         window.deleteWork = async function(id) {
-            if (confirm("Ви дійсно хочете видалити цю роботу з сайту?")) {
+            if (confirm("Видалити цю роботу?")) {
                 try {
                     await deleteDoc(doc(db, "works", id));
-                    alert("Роботу успішно видалено!");
                     loadAdminWorks();
                 } catch (error) {
-                    console.error("Помилка видалення:", error);
-                    alert("Не вдалося видалити роботу.");
+                    alert("Помилка видалення.");
                 }
             }
         }
@@ -468,33 +512,25 @@
             submitBtn.disabled = true;
             submitBtn.textContent = "Публікація...";
 
-            const title = document.getElementById('work-title').value;
-            const category = document.getElementById('work-category').value;
-            const image = document.getElementById('work-image').value;
-            const price = document.getElementById('work-price').value;
-            const desc = document.getElementById('work-desc').value;
-
             try {
                 await addDoc(collection(db, "works"), {
-                    title: title,
-                    category: category,
-                    image: image,
-                    price: price,
-                    desc: desc,
+                    title: document.getElementById('work-title').value,
+                    category: document.getElementById('work-category').value,
+                    image: document.getElementById('work-image').value,
+                    price: document.getElementById('work-price-value'] || document.getElementById('work-price').value,
+                    desc: document.getElementById('work-desc').value,
                     createdAt: new Date()
                 });
 
                 form.reset();
                 successMsg.style.display = "block";
-                setTimeout(() => { successMsg.style.display = "none"; }, 4000);
-
+                setTimeout(() => { successMsg.style.display = "none"; }, 3000);
                 loadAdminWorks();
             } catch (error) {
-                console.error("Помилка додавання: ", error);
-                alert("Сталася помилка при збереженні.");
+                alert("Помилка збереження.");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Опублікувати на сайті";
+                submitBtn.textContent = "Опублікувати";
             }
         });
     </script>
