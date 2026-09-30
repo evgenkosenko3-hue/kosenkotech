@@ -314,7 +314,8 @@
                 <button type="submit" id="auth-btn">Увійти</button>
             </form>
             <p id="auth-error" class="auth-error"></p>
-            <div class="toggle-auth" onclick="toggleAuthMode()">
+            <!-- Прибрано onclick, додано клас для обробки в JS -->
+            <div class="toggle-auth" id="toggle-auth-btn">
                 <span id="toggle-text">Немає акаунта? Зареєструватися</span>
             </div>
         </div>
@@ -328,7 +329,7 @@
                 <ul class="nav-menu">
                     <li><a href="index.html">Головна</a></li>
                     <li><a href="works.html">Роботи</a></li>
-                    <li><button class="btn-logout" onclick="logoutUser()">Вийти</button></li>
+                    <li><button class="btn-logout" id="logout-btn">Вийти</button></li>
                 </ul>
             </div>
         </header>
@@ -410,13 +411,15 @@
 
         let isSignUp = false; // Режим за замовчуванням: Вхід
 
-        window.toggleAuthMode = function() {
+        // Перемикання режимів Вхід / Реєстрація через JavaScript обробник подій
+        const toggleAuthBtn = document.getElementById('toggle-auth-btn');
+        toggleAuthBtn.addEventListener('click', () => {
             isSignUp = !isSignUp;
             document.getElementById('auth-title').textContent = isSignUp ? "📝 Реєстрація акаунта" : "🔒 Вхід в систему";
             document.getElementById('auth-btn').textContent = isSignUp ? "Зареєструватися" : "Увійти";
             document.getElementById('toggle-text').textContent = isSignUp ? "Вже є акаунт? Увійти" : "Немає акаунта? Зареєструватися";
             document.getElementById('auth-error').style.display = 'none';
-        }
+        });
 
         // Обробка форми Входу/Реєстрації
         const authForm = document.getElementById('auth-form');
@@ -437,7 +440,15 @@
                 }
             } catch (error) {
                 errorElement.style.display = 'block';
-                errorElement.textContent = "Помилка: " + error.message;
+                let errorMsg = error.message;
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMsg = "Цей email вже зареєстрований!";
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg = "Пароль занадто слабкий (мінімум 6 символів).";
+                } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    errorMsg = "Невірний email або пароль.";
+                }
+                errorElement.textContent = "Помилка: " + errorMsg;
             }
         });
 
@@ -455,19 +466,21 @@
             }
         });
 
-        window.logoutUser = function() {
+        // Кнопка виходу з аккаунта
+        const logoutBtn = document.getElementById('logout-btn');
+        logoutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
                 location.reload();
             });
-        }
+        });
 
-        // Робота з базами даних (додавання та видалення)
+        // Робота з базою даних (додавання та видалення)
         const form = document.getElementById('add-work-form');
         const successMsg = document.getElementById('success-message');
         const submitBtn = document.getElementById('submit-btn');
         const adminWorksContainer = document.getElementById('admin-works-list');
 
-        window.loadAdminWorks = async function() {
+        async function loadAdminWorks() {
             try {
                 const querySnapshot = await getDocs(collection(db, "works"));
                 if (querySnapshot.empty) {
@@ -487,23 +500,28 @@
                             <h4>${work.title}</h4>
                             <span>Категорія: <b>${work.category}</b> | Ціна: <b>${work.price || '-'}</b></span>
                         </div>
-                        <button class="btn btn-danger" onclick="deleteWork('${docId}')">Видалити</button>
+                        <button class="btn btn-danger delete-btn" data-id="${docId}">Видалити</button>
                     `;
                     adminWorksContainer.appendChild(row);
                 });
-            } catch (error) {
-                console.error("Помилка:", error);
-            }
-        }
 
-        window.deleteWork = async function(id) {
-            if (confirm("Видалити цю роботу?")) {
-                try {
-                    await deleteDoc(doc(db, "works", id));
-                    loadAdminWorks();
-                } catch (error) {
-                    alert("Помилка видалення.");
-                }
+                // Додаємо обробники для кнопок видалення
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', async (e) => {
+                        const id = e.target.getAttribute('data-id');
+                        if (confirm("Видалити цю роботу?")) {
+                            try {
+                                await deleteDoc(doc(db, "works", id));
+                                loadAdminWorks();
+                            } catch (error) {
+                                alert("Помилка видалення.");
+                            }
+                        }
+                    });
+                });
+
+            } catch (error) {
+                console.error("Помилка завантаження:", error);
             }
         }
 
@@ -517,7 +535,7 @@
                     title: document.getElementById('work-title').value,
                     category: document.getElementById('work-category').value,
                     image: document.getElementById('work-image').value,
-                    price: document.getElementById('work-price-value'] || document.getElementById('work-price').value,
+                    price: document.getElementById('work-price').value,
                     desc: document.getElementById('work-desc').value,
                     createdAt: new Date()
                 });
