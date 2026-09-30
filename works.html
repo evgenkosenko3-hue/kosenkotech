@@ -72,30 +72,30 @@
             color: var(--accent-color);
         }
 
-        .page-header {
-            padding: 130px 20px 40px;
-            text-align: center;
-            max-width: 800px;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 130px 20px 60px;
         }
 
-        .page-header h1 {
-            font-size: 38px;
+        .page-title {
+            font-size: 36px;
             color: #fff;
             margin-bottom: 10px;
+            text-align: center;
         }
 
-        .page-header p {
+        .page-subtitle {
             color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 40px;
             font-size: 16px;
         }
 
-        .works-container {
-            max-width: 1200px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
+        /* Сітка робіт */
+        .works-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             gap: 25px;
         }
 
@@ -114,11 +114,22 @@
             border-color: var(--accent-color);
         }
 
-        .work-img {
+        .work-img-container {
             width: 100%;
             height: 220px;
-            object-fit: cover;
             background-color: #0b0b0b;
+            overflow: hidden;
+        }
+
+        .work-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .work-card:hover .work-img-container img {
+            transform: scale(1.05);
         }
 
         .work-content {
@@ -128,50 +139,53 @@
             flex-grow: 1;
         }
 
-        .work-tag {
-            font-size: 12px;
+        .work-category {
+            display: inline-block;
+            background-color: rgba(255, 102, 0, 0.15);
             color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            align-self: flex-start;
+            border: 1px solid rgba(255, 102, 0, 0.3);
         }
 
-        .work-content h3 {
+        .work-title {
             font-size: 20px;
             color: #fff;
             margin-bottom: 10px;
         }
 
-        .work-content p {
-            font-size: 14px;
+        .work-desc {
             color: var(--text-muted);
+            font-size: 14px;
             margin-bottom: 20px;
             flex-grow: 1;
         }
 
-        .btn-order {
-            display: block;
-            background-color: var(--accent-color);
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            border-radius: 4px;
-            text-decoration: none;
+        .work-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+            margin-top: auto;
+        }
+
+        .work-price {
+            font-size: 18px;
             font-weight: bold;
-            transition: background 0.3s;
+            color: #fff;
         }
 
-        .btn-order:hover {
-            background-color: #e55c00;
-        }
-
-        .loading-text {
+        .loading-text, .empty-text {
             grid-column: 1 / -1;
             text-align: center;
             color: var(--text-muted);
             font-size: 18px;
-            padding: 40px;
+            padding: 40px 0;
         }
 
         footer {
@@ -181,29 +195,11 @@
             padding: 30px 20px;
             color: var(--text-muted);
             font-size: 14px;
+            margin-top: 60px;
         }
 
         @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-                padding: 12px 10px;
-            }
-            .logo {
-                font-size: 18px;
-            }
-            .nav-menu {
-                gap: 12px;
-                font-size: 13px;
-                justify-content: center;
-                flex-wrap: wrap;
-                width: 100%;
-            }
-            .page-header {
-                padding-top: 150px;
-            }
-            .works-container {
+            .works-grid {
                 grid-template-columns: 1fr;
             }
         }
@@ -215,31 +211,30 @@
         <div class="nav-container">
             <a href="index.html" class="logo">KT // KOSENKO TECH</a>
             <ul class="nav-menu">
-                <li><a href="index.html">🏠 Головна</a></li>
-                <li><a href="works.html" class="active">⚙️ Роботи</a></li>
-                <li><a href="gallery.html">📸 Галерея</a></li>
-                <li><a href="socials.html">📱 Соцмережі</a></li>
-                <li><a href="contacts.html">📞 Контакти</a></li>
-                <li><a href="admin.html">🛠️ Адмін</a></li>
+                <li><a href="index.html">Головна</a></li>
+                <li><a href="works.html" class="active">Роботи</a></li>
+                <li><a href="gallery.html">Галерея</a></li>
+                <li><a href="socials.html">Соцмережі</a></li>
+                <li><a href="contacts.html">Контакти</a></li>
             </ul>
         </div>
     </header>
 
-    <div class="page-header">
-        <h1>Наші виконані роботи</h1>
-        <p>Перегляньте приклади наших проектів, виготовленої техніки та деталей. Ви можете замовити подібне рішення.</p>
-    </div>
+    <div class="container">
+        <h1 class="page-title">Наші виконані роботи</h1>
+        <p class="page-subtitle">Реалізовані проєкти, зборки техніки та індивідуальні замовлення</p>
 
-    <!-- Контейнер де динамічно з'являтимуться роботи з бази -->
-    <div class="works-container" id="works-list">
-        <div class="loading-text">Завантаження робіт з бази даних...</div>
+        <!-- Сюди автоматично завантажуватимуться роботи з бази даних Firebase -->
+        <div id="works-container" class="works-grid">
+            <div class="loading-text">Завантаження робіт з бази даних...</div>
+        </div>
     </div>
 
     <footer>
         <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
     </footer>
 
-    <!-- Firebase скрипт для завантаження робіт -->
+    <!-- Підключення Firebase та скрипт виведення робіт -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -257,41 +252,44 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadWorks() {
-            const container = document.getElementById('works-list');
+        async function loadPublicWorks() {
+            const container = document.getElementById('works-container');
             try {
                 const querySnapshot = await getDocs(collection(db, "works"));
                 
                 if (querySnapshot.empty) {
-                    container.innerHTML = '<div class="loading-text">Поки що немає доданих робіт. Скористайтеся адмін-панеллю, щоб додати першу роботу!</div>';
+                    container.innerHTML = '<div class="empty-text">Наразі на сайті немає опублікованих робіт.</div>';
                     return;
                 }
 
-                container.innerHTML = ''; // Очищаємо текст завантаження
-                
+                container.innerHTML = '';
                 querySnapshot.forEach((doc) => {
                     const work = doc.data();
                     
                     const card = document.createElement('div');
                     card.className = 'work-card';
                     card.innerHTML = `
-                        <img src="${work.image}" alt="${work.title}" class="work-img" onerror="this.src='https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'">
+                        <div class="work-img-container">
+                            <img src="${work.image || 'https://via.placeholder.com/400x220'}" alt="${work.title}" onerror="this.src='https://via.placeholder.com/400x220'">
+                        </div>
                         <div class="work-content">
-                            <span class="work-tag">${work.category}</span>
-                            <h3>${work.title}</h3>
-                            <p>${work.desc}</p>
-                            <a href="contacts.html" class="btn-order">Замовити схоже</a>
+                            <span class="work-category">${work.category || 'Послуга'}</span>
+                            <h3 class="work-title">${work.title}</h3>
+                            <p class="work-desc">${work.desc || ''}</p>
+                            <div class="work-footer">
+                                <span class="work-price">${work.price ? work.price : ''}</span>
+                            </div>
                         </div>
                     `;
                     container.appendChild(card);
                 });
             } catch (error) {
-                console.error("Помилка завантаження робіт: ", error);
-                container.innerHTML = '<div class="loading-text" style="color: #ff4444;">Помилка завантаження даних із бази. Перевірте підключення.</div>';
+                console.error("Помилка завантаження:", error);
+                container.innerHTML = '<div class="empty-text" style="color: #ff4444;">Помилка завантаження даних із бази.</div>';
             }
         }
 
-        loadWorks();
+        loadPublicWorks();
     </script>
 </body>
 </html>
