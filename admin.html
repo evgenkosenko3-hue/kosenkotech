@@ -12,6 +12,7 @@
             --text-color: #e0e0e0;
             --text-muted: #aaaaaa;
             --border-color: #2c2c2c;
+            --danger-color: #ff4444;
         }
 
         * {
@@ -26,6 +27,71 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
+        }
+
+        /* Екран введення пароля */
+        #auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .auth-box {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .auth-box h2 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .auth-box input {
+            width: 100%;
+            padding: 12px;
+            background-color: #121212;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .auth-box button {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--accent-color);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .auth-error {
+            color: var(--danger-color);
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Основний контент адмінки (спочатку прихований) */
+        #admin-content {
+            display: none;
         }
 
         header {
@@ -158,11 +224,6 @@
             height: 100px;
         }
 
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
         .btn {
             display: inline-block;
             background-color: var(--accent-color);
@@ -173,12 +234,21 @@
             font-weight: bold;
             font-size: 15px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
+            transition: background 0.3s;
         }
 
         .btn:hover {
             background-color: #e55c00;
-            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            padding: 8px 14px;
+            font-size: 13px;
+        }
+
+        .btn-danger:hover {
+            background-color: #cc0000;
         }
 
         #success-message {
@@ -186,6 +256,29 @@
             margin-top: 15px;
             color: #00cc66;
             font-weight: bold;
+        }
+
+        .admin-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #121212;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .admin-item-info h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .admin-item-info span {
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
         footer {
@@ -196,94 +289,118 @@
             color: var(--text-muted);
             font-size: 14px;
         }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-                padding: 12px 10px;
-            }
-            .logo {
-                font-size: 18px;
-            }
-            .nav-menu {
-                gap: 12px;
-                font-size: 13px;
-                justify-content: center;
-                flex-wrap: wrap;
-                width: 100%;
-            }
-            .admin-container {
-                padding-top: 160px;
-            }
-        }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">KT // KOSENKO TECH</a>
-            <ul class="nav-menu">
-                <li><a href="index.html">🏠 Головна</a></li>
-                <li><a href="works.html">⚙️ Роботи</a></li>
-                <li><a href="gallery.html">📸 Галерея</a></li>
-                <li><a href="socials.html">📱 Соцмережі</a></li>
-                <li><a href="contacts.html">📞 Контакти</a></li>
-                <li><a href="admin.html" class="active">🛠️ Адмін</a></li>
-            </ul>
+    <!-- Екран введення пароля -->
+    <div id="auth-overlay">
+        <div class="auth-box">
+            <h2>🔒 Вхід в адмін-панель</h2>
+            <input type="password" id="admin-pass" placeholder="Введіть пароль">
+            <button onclick="checkPassword()">Увійти</button>
+            <p id="auth-error" class="auth-error">Невірний пароль!</p>
         </div>
-    </header>
-
-    <div class="admin-container">
-        
-        <div class="admin-header">
-            <h1>Панель керування сайтом</h1>
-            <div class="admin-badge">Режим: Адміністратор</div>
-        </div>
-
-        <div class="admin-section">
-            <h2>Додати нову роботу / послугу</h2>
-            <form id="add-work-form">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Назва проєкту / деталі</label>
-                        <input type="text" id="work-title" required placeholder="Наприклад: Зборка моста міні-трактора">
-                    </div>
-                    <div class="form-group">
-                        <label>Категорія</label>
-                        <select id="work-category">
-                            <option value="Виробництво техніки">Виробництво техніки</option>
-                            <option value="Токарні роботи">Токарні роботи</option>
-                            <option value="Ремонт і відновлення">Ремонт і відновлення</option>
-                            <option value="Інше">Інше</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Посилання на фото (URL)</label>
-                    <input type="text" id="work-image" required placeholder="https://images.unsplash.com/...">
-                </div>
-                <div class="form-group">
-                    <label>Опис процесу або характеристик</label>
-                    <textarea id="work-desc" required placeholder="Короткий опис виконаної роботи..."></textarea>
-                </div>
-                <button type="submit" class="btn" id="submit-btn">Опублікувати на сайті</button>
-                <p id="success-message">✅ Роботу успішно додано до бази даних!</p>
-            </form>
-        </div>
-
     </div>
 
-    <footer>
-        <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
-    </footer>
+    <!-- Основна панель (з'явиться тільки після введення пароля) -->
+    <div id="admin-content">
+        <header>
+            <div class="nav-container">
+                <a href="index.html" class="logo">KT // KOSENKO TECH</a>
+                <ul class="nav-menu">
+                    <li><a href="index.html">🏠 Головна</a></li>
+                    <li><a href="works.html">⚙️ Роботи</a></li>
+                    <li><a href="gallery.html">📸 Галерея</a></li>
+                    <li><a href="socials.html">📱 Соцмережі</a></li>
+                    <li><a href="contacts.html">📞 Контакти</a></li>
+                </ul>
+            </div>
+        </header>
 
-    <!-- Firebase скрипти для адмінки -->
+        <div class="admin-container">
+            <div class="admin-header">
+                <h1>Панель керування сайтом</h1>
+                <div class="admin-badge">Захищений режим</div>
+            </div>
+
+            <div class="admin-section">
+                <h2>Додати нову роботу / послугу</h2>
+                <form id="add-work-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Назва проєкту / деталі</label>
+                            <input type="text" id="work-title" required placeholder="Наприклад: Зборка моста">
+                        </div>
+                        <div class="form-group">
+                            <label>Категорія</label>
+                            <select id="work-category">
+                                <option value="Виробництво техніки">Виробництво техніки</option>
+                                <option value="Токарні роботи">Токарні роботи</option>
+                                <option value="Ремонт і відновлення">Ремонт і відновлення</option>
+                                <option value="Інше">Інше</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Посилання на фото (URL)</label>
+                            <input type="text" id="work-image" required placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label>Ціна</label>
+                            <input type="text" id="work-price" required placeholder="Наприклад: 3000 грн">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Опис процесу або характеристик</label>
+                        <textarea id="work-desc" required placeholder="Короткий опис..."></textarea>
+                    </div>
+                    <button type="submit" class="btn" id="submit-btn">Опублікувати на сайті</button>
+                    <p id="success-message">✅ Роботу успішно додано до бази даних!</p>
+                </form>
+            </div>
+
+            <div class="admin-section">
+                <h2>Керування опублікованими роботами (видалення)</h2>
+                <div id="admin-works-list">
+                    <p style="color: var(--text-muted);">Завантаження списку...</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
+        </footer>
+    </div>
+
+    <!-- Скрипт перевірки пароля та логіки Firebase -->
+    <script>
+        // ЗМІНІТЬ ЦЕЙ ПАРОЛЬ НА СВІЙ БАЖАНИЙ
+        const SECRET_PASSWORD = "123"; 
+
+        function checkPassword() {
+            const inputVal = document.getElementById('admin-pass').value;
+            if (inputVal === SECRET_PASSWORD) {
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('admin-content').style.display = 'block';
+                loadAdminWorks(); // Завантажуємо список після входу
+            } else {
+                document.getElementById('auth-error').style.display = 'block';
+            }
+        }
+
+        // Дозволити натискати Enter замість кнопки
+        document.getElementById('admin-pass').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCUV88kb3vrItyu-GHkbQQRm37j4jqIjB0",
@@ -301,6 +418,50 @@
         const form = document.getElementById('add-work-form');
         const successMsg = document.getElementById('success-message');
         const submitBtn = document.getElementById('submit-btn');
+        const adminWorksContainer = document.getElementById('admin-works-list');
+
+        window.loadAdminWorks = async function() {
+            try {
+                const querySnapshot = await getDocs(collection(db, "works"));
+                if (querySnapshot.empty) {
+                    adminWorksContainer.innerHTML = '<p style="color: var(--text-muted);">На сайті ще немає жодної роботи.</p>';
+                    return;
+                }
+
+                adminWorksContainer.innerHTML = '';
+                querySnapshot.forEach((documentSnap) => {
+                    const work = documentSnap.data();
+                    const docId = documentSnap.id;
+
+                    const row = document.createElement('div');
+                    row.className = 'admin-item-row';
+                    row.innerHTML = `
+                        <div class="admin-item-info">
+                            <h4>${work.title}</h4>
+                            <span>Категорія: <b>${work.category}</b> | Ціна: <b>${work.price || 'Не вказано'}</b></span>
+                        </div>
+                        <button class="btn btn-danger" onclick="deleteWork('${docId}')">Видалити</button>
+                    `;
+                    adminWorksContainer.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Помилка завантаження:", error);
+                adminWorksContainer.innerHTML = '<p style="color: #ff4444;">Помилка завантаження даних.</p>';
+            }
+        }
+
+        window.deleteWork = async function(id) {
+            if (confirm("Ви дійсно хочете видалити цю роботу з сайту?")) {
+                try {
+                    await deleteDoc(doc(db, "works", id));
+                    alert("Роботу успішно видалено!");
+                    loadAdminWorks();
+                } catch (error) {
+                    console.error("Помилка видалення:", error);
+                    alert("Не вдалося видалити роботу.");
+                }
+            }
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -310,6 +471,7 @@
             const title = document.getElementById('work-title').value;
             const category = document.getElementById('work-category').value;
             const image = document.getElementById('work-image').value;
+            const price = document.getElementById('work-price').value;
             const desc = document.getElementById('work-desc').value;
 
             try {
@@ -317,15 +479,16 @@
                     title: title,
                     category: category,
                     image: image,
+                    price: price,
                     desc: desc,
                     createdAt: new Date()
                 });
 
                 form.reset();
                 successMsg.style.display = "block";
-                setTimeout(() => {
-                    successMsg.style.display = "none";
-                }, 4000);
+                setTimeout(() => { successMsg.style.display = "none"; }, 4000);
+
+                loadAdminWorks();
             } catch (error) {
                 console.error("Помилка додавання: ", error);
                 alert("Сталася помилка при збереженні.");
