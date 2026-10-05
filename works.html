@@ -92,6 +92,19 @@
             font-size: 16px;
         }
 
+        /* Стилі для категорій */
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-heading {
+            font-size: 24px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
         /* Сітка робіт */
         .works-grid {
             display: grid;
@@ -180,12 +193,10 @@
             color: #fff;
         }
 
-        .loading-text, .empty-text {
-            grid-column: 1 / -1;
-            text-align: center;
+        .empty-text {
             color: var(--text-muted);
-            font-size: 18px;
-            padding: 40px 0;
+            font-size: 15px;
+            font-style: italic;
         }
 
         footer {
@@ -224,9 +235,36 @@
         <h1 class="page-title">Наші виконані роботи</h1>
         <p class="page-subtitle">Реалізовані проєкти, зборки техніки та індивідуальні замовлення</p>
 
-        <!-- Сюди автоматично завантажуватимуться роботи з бази даних Firebase -->
-        <div id="works-container" class="works-grid">
-            <div class="loading-text">Завантаження робіт з бази даних...</div>
+        <!-- Категорія 1: Виробництво техніки -->
+        <div class="category-section">
+            <h2 class="category-heading">🛠️ Виробництво техніки</h2>
+            <div id="grid-production" class="works-grid">
+                <div class="empty-text">Завантаження...</div>
+            </div>
+        </div>
+
+        <!-- Категорія 2: Токарні роботи -->
+        <div class="category-section">
+            <h2 class="category-heading">⚙️ Токарні роботи</h2>
+            <div id="grid-lathe" class="works-grid">
+                <div class="empty-text">Завантаження...</div>
+            </div>
+        </div>
+
+        <!-- Категорія 3: Ремонт і відновлення -->
+        <div class="category-section">
+            <h2 class="category-heading">🔧 Ремонт і відновлення</h2>
+            <div id="grid-repair" class="works-grid">
+                <div class="empty-text">Завантаження...</div>
+            </div>
+        </div>
+
+        <!-- Категорія 4: Інше -->
+        <div class="category-section">
+            <h2 class="category-heading">📦 Інше</h2>
+            <div id="grid-other" class="works-grid">
+                <div class="empty-text">Завантаження...</div>
+            </div>
         </div>
     </div>
 
@@ -234,7 +272,7 @@
         <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
     </footer>
 
-    <!-- Підключення Firebase та скрипт виведення робіт -->
+    <!-- Підключення Firebase та скрипт розподілу робіт за категоріями -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -253,16 +291,31 @@
         const db = getFirestore(app);
 
         async function loadPublicWorks() {
-            const container = document.getElementById('works-container');
+            const gridProd = document.getElementById('grid-production');
+            const gridLathe = document.getElementById('grid-lathe');
+            const gridRepair = document.getElementById('grid-repair');
+            const gridOther = document.getElementById('grid-other');
+
+            // Очищуємо перед завантаженням
+            gridProd.innerHTML = '';
+            gridLathe.innerHTML = '';
+            gridRepair.innerHTML = '';
+            gridOther.innerHTML = '';
+
+            let counts = { prod: 0, lathe: 0, repair: 0, other: 0 };
+
             try {
                 const querySnapshot = await getDocs(collection(db, "works"));
                 
                 if (querySnapshot.empty) {
-                    container.innerHTML = '<div class="empty-text">Наразі на сайті немає опублікованих робіт.</div>';
+                    const msg = '<div class="empty-text">Наразі в цій категорії немає робіт.</div>';
+                    gridProd.innerHTML = msg;
+                    gridLathe.innerHTML = msg;
+                    gridRepair.innerHTML = msg;
+                    gridOther.innerHTML = msg;
                     return;
                 }
 
-                container.innerHTML = '';
                 querySnapshot.forEach((doc) => {
                     const work = doc.data();
                     
@@ -281,11 +334,31 @@
                             </div>
                         </div>
                     `;
-                    container.appendChild(card);
+
+                    // Розподіл за категоріями з бази даних
+                    if (work.category === "Виробництво техніки") {
+                        gridProd.appendChild(card);
+                        counts.prod++;
+                    } else if (work.category === "Токарні роботи") {
+                        gridLathe.appendChild(card);
+                        counts.lathe++;
+                    } else if (work.category === "Ремонт і відновлення") {
+                        gridRepair.appendChild(card);
+                        counts.repair++;
+                    } else {
+                        gridOther.appendChild(card);
+                        counts.other++;
+                    }
                 });
+
+                // Якщо якась категорія порожня, виводимо напис
+                if (counts.prod === 0) gridProd.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
+                if (counts.lathe === 0) gridLathe.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
+                if (counts.repair === 0) gridRepair.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
+                if (counts.other === 0) gridOther.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
+
             } catch (error) {
                 console.error("Помилка завантаження:", error);
-                container.innerHTML = '<div class="empty-text" style="color: #ff4444;">Помилка завантаження даних із бази.</div>';
             }
         }
 
