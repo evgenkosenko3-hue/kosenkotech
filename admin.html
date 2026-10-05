@@ -314,7 +314,6 @@
                 <button type="submit" id="auth-btn">Увійти</button>
             </form>
             <p id="auth-error" class="auth-error"></p>
-            <!-- Прибрано onclick, додано клас для обробки в JS -->
             <div class="toggle-auth" id="toggle-auth-btn">
                 <span id="toggle-text">Немає акаунта? Зареєструватися</span>
             </div>
@@ -349,11 +348,13 @@
                         </div>
                         <div class="form-group">
                             <label>Категорія</label>
-                            <select id="work-category">
-                                <option value="Виробництво техніки">Виробництво техніки</option>
+                            <select id="work-category" required>
+                                <option value="" disabled selected>Оберіть категорію</option>
+                                <option value="Саморобні трактори">Саморобні трактори</option>
                                 <option value="Токарні роботи">Токарні роботи</option>
-                                <option value="Ремонт і відновлення">Ремонт і відновлення</option>
-                                <option value="Інше">Інше</option>
+                                <option value="Виготовлення деталей">Виготовлення деталей</option>
+                                <option value="Шліфувальні роботи">Шліфувальні роботи</option>
+                                <option value="Ремонт машин та вузлів">Ремонт машин та вузлів</option>
                             </select>
                         </div>
                     </div>
@@ -409,9 +410,8 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        let isSignUp = false; // Режим за замовчуванням: Вхід
+        let isSignUp = false;
 
-        // Перемикання режимів Вхід / Реєстрація через JavaScript обробник подій
         const toggleAuthBtn = document.getElementById('toggle-auth-btn');
         toggleAuthBtn.addEventListener('click', () => {
             isSignUp = !isSignUp;
@@ -421,7 +421,6 @@
             document.getElementById('auth-error').style.display = 'none';
         });
 
-        // Обробка форми Входу/Реєстрації
         const authForm = document.getElementById('auth-form');
         authForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -431,11 +430,9 @@
 
             try {
                 if (isSignUp) {
-                    // Реєстрація нового користувача
                     await createUserWithEmailAndPassword(auth, email, password);
                     alert("Реєстрація успішна!");
                 } else {
-                    // Вхід існуючого користувача
                     await signInWithEmailAndPassword(auth, email, password);
                 }
             } catch (error) {
@@ -452,21 +449,17 @@
             }
         });
 
-        // Перевірка стану користувача (чи він увійшов)
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Користувач увійшов — показуємо адмінку
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
                 loadAdminWorks();
             } else {
-                // Користувач не увійшов — показуємо вікно авторизації
                 document.getElementById('auth-overlay').style.display = 'flex';
                 document.getElementById('admin-content').style.display = 'none';
             }
         });
 
-        // Кнопка виходу з аккаунта
         const logoutBtn = document.getElementById('logout-btn');
         logoutBtn.addEventListener('click', () => {
             signOut(auth).then(() => {
@@ -474,7 +467,6 @@
             });
         });
 
-        // Робота з базою даних (додавання та видалення)
         const form = document.getElementById('add-work-form');
         const successMsg = document.getElementById('success-message');
         const submitBtn = document.getElementById('submit-btn');
@@ -505,7 +497,6 @@
                     adminWorksContainer.appendChild(row);
                 });
 
-                // Додаємо обробники для кнопок видалення
                 document.querySelectorAll('.delete-btn').forEach(button => {
                     button.addEventListener('click', async (e) => {
                         const id = e.target.getAttribute('data-id');
