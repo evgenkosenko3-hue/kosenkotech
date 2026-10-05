@@ -88,21 +88,40 @@
         .page-subtitle {
             color: var(--text-muted);
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             font-size: 16px;
         }
 
-        /* Стилі для категорій */
-        .category-section {
-            margin-bottom: 50px;
+        /* Стилі для кнопок фільтрів */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 40px;
         }
 
-        .category-heading {
-            font-size: 24px;
+        .filter-btn {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--accent-color);
             color: var(--accent-color);
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 10px;
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
         }
 
         /* Сітка робіт */
@@ -194,9 +213,12 @@
         }
 
         .empty-text {
+            grid-column: 1 / -1;
+            text-align: center;
             color: var(--text-muted);
-            font-size: 15px;
+            font-size: 16px;
             font-style: italic;
+            padding: 40px 0;
         }
 
         footer {
@@ -235,36 +257,19 @@
         <h1 class="page-title">Наші виконані роботи</h1>
         <p class="page-subtitle">Реалізовані проєкти, зборки техніки та індивідуальні замовлення</p>
 
-        <!-- Категорія 1: Виробництво техніки -->
-        <div class="category-section">
-            <h2 class="category-heading">🛠️ Виробництво техніки</h2>
-            <div id="grid-production" class="works-grid">
-                <div class="empty-text">Завантаження...</div>
-            </div>
+        <!-- Кнопки фільтрів -->
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Всі роботи</button>
+            <button class="filter-btn" data-filter="Саморобні трактори">Саморобні трактори</button>
+            <button class="filter-btn" data-filter="Токарні роботи">Токарні роботи</button>
+            <button class="filter-btn" data-filter="Виготовлення деталей">Виготовлення деталей</button>
+            <button class="filter-btn" data-filter="Шліфувальні роботи">Шліфувальні роботи</button>
+            <button class="filter-btn" data-filter="Ремонт машин та вузлів">Ремонт машин та вузлів</button>
         </div>
 
-        <!-- Категорія 2: Токарні роботи -->
-        <div class="category-section">
-            <h2 class="category-heading">⚙️ Токарні роботи</h2>
-            <div id="grid-lathe" class="works-grid">
-                <div class="empty-text">Завантаження...</div>
-            </div>
-        </div>
-
-        <!-- Категорія 3: Ремонт і відновлення -->
-        <div class="category-section">
-            <h2 class="category-heading">🔧 Ремонт і відновлення</h2>
-            <div id="grid-repair" class="works-grid">
-                <div class="empty-text">Завантаження...</div>
-            </div>
-        </div>
-
-        <!-- Категорія 4: Інше -->
-        <div class="category-section">
-            <h2 class="category-heading">📦 Інше</h2>
-            <div id="grid-other" class="works-grid">
-                <div class="empty-text">Завантаження...</div>
-            </div>
+        <!-- Єдина сітка робіт для фільтрації -->
+        <div id="works-grid" class="works-grid">
+            <div class="empty-text">Завантаження...</div>
         </div>
     </div>
 
@@ -272,7 +277,7 @@
         <p>&copy; 2026 Kosenko Tech (KT). Усі права захищені.</p>
     </footer>
 
-    <!-- Підключення Firebase та скрипт розподілу робіт за категоріями -->
+    <!-- Підключення Firebase та скрипт фільтрації -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
         import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
@@ -290,79 +295,81 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        async function loadPublicWorks() {
-            const gridProd = document.getElementById('grid-production');
-            const gridLathe = document.getElementById('grid-lathe');
-            const gridRepair = document.getElementById('grid-repair');
-            const gridOther = document.getElementById('grid-other');
+        let allWorks = []; // Зберігатимемо всі завантажені роботи
 
-            // Очищуємо перед завантаженням
-            gridProd.innerHTML = '';
-            gridLathe.innerHTML = '';
-            gridRepair.innerHTML = '';
-            gridOther.innerHTML = '';
-
-            let counts = { prod: 0, lathe: 0, repair: 0, other: 0 };
+        async function initWorksPage() {
+            const gridContainer = document.getElementById('works-grid');
+            const filterButtons = document.querySelectorAll('.filter-btn');
 
             try {
                 const querySnapshot = await getDocs(collection(db, "works"));
                 
                 if (querySnapshot.empty) {
-                    const msg = '<div class="empty-text">Наразі в цій категорії немає робіт.</div>';
-                    gridProd.innerHTML = msg;
-                    gridLathe.innerHTML = msg;
-                    gridRepair.innerHTML = msg;
-                    gridOther.innerHTML = msg;
+                    gridContainer.innerHTML = '<div class="empty-text">Наразі немає доданих робіт.</div>';
                     return;
                 }
 
+                allWorks = [];
                 querySnapshot.forEach((doc) => {
-                    const work = doc.data();
-                    
-                    const card = document.createElement('div');
-                    card.className = 'work-card';
-                    card.innerHTML = `
-                        <div class="work-img-container">
-                            <img src="${work.image || 'https://via.placeholder.com/400x220'}" alt="${work.title}" onerror="this.src='https://via.placeholder.com/400x220'">
-                        </div>
-                        <div class="work-content">
-                            <span class="work-category">${work.category || 'Послуга'}</span>
-                            <h3 class="work-title">${work.title}</h3>
-                            <p class="work-desc">${work.desc || ''}</p>
-                            <div class="work-footer">
-                                <span class="work-price">${work.price ? work.price : ''}</span>
-                            </div>
-                        </div>
-                    `;
-
-                    // Розподіл за категоріями з бази даних
-                    if (work.category === "Виробництво техніки") {
-                        gridProd.appendChild(card);
-                        counts.prod++;
-                    } else if (work.category === "Токарні роботи") {
-                        gridLathe.appendChild(card);
-                        counts.lathe++;
-                    } else if (work.category === "Ремонт і відновлення") {
-                        gridRepair.appendChild(card);
-                        counts.repair++;
-                    } else {
-                        gridOther.appendChild(card);
-                        counts.other++;
-                    }
+                    allWorks.push(doc.data());
                 });
 
-                // Якщо якась категорія порожня, виводимо напис
-                if (counts.prod === 0) gridProd.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
-                if (counts.lathe === 0) gridLathe.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
-                if (counts.repair === 0) gridRepair.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
-                if (counts.other === 0) gridOther.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
+                // Відображаємо всі роботи за замовчуванням
+                renderWorks('all');
+
+                // Налаштування подій для кнопок фільтрації
+                filterButtons.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        // Знімаємо клас active з усіх кнопок та додаємо на натиснуту
+                        filterButtons.forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+
+                        const filterValue = e.target.getAttribute('data-filter');
+                        renderWorks(filterValue);
+                    });
+                });
 
             } catch (error) {
-                console.error("Помилка завантаження:", error);
+                console.error("Помилка завантаження робіт:", error);
+                gridContainer.innerHTML = '<div class="empty-text">Помилка завантаження даних. Спробуйте пізніше.</div>';
             }
         }
 
-        loadPublicWorks();
+        function renderWorks(categoryFilter) {
+            const gridContainer = document.getElementById('works-grid');
+            gridContainer.innerHTML = '';
+
+            // Фільтруємо масив робіт
+            const filteredWorks = categoryFilter === 'all' 
+                ? allWorks 
+                : allWorks.filter(work => work.category === categoryFilter);
+
+            if (filteredWorks.length === 0) {
+                gridContainer.innerHTML = '<div class="empty-text">Немає робіт у цій категорії.</div>';
+                return;
+            }
+
+            filteredWorks.forEach(work => {
+                const card = document.createElement('div');
+                card.className = 'work-card';
+                card.innerHTML = `
+                    <div class="work-img-container">
+                        <img src="${work.image || 'https://via.placeholder.com/400x220'}" alt="${work.title}" onerror="this.src='https://via.placeholder.com/400x220'">
+                    </div>
+                    <div class="work-content">
+                        <span class="work-category">${work.category || 'Послуга'}</span>
+                        <h3 class="work-title">${work.title}</h3>
+                        <p class="work-desc">${work.desc || ''}</p>
+                        <div class="work-footer">
+                            <span class="work-price">${work.price ? work.price : ''}</span>
+                        </div>
+                    </div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+
+        initWorksPage();
     </script>
 </body>
 </html>
